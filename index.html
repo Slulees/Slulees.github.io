@@ -3,17 +3,10 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Slulee Profile</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slulee's Page</title>
     
     <style>
-        /* --- General Reset --- */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
         :root {
             --bg-color: #1a0a2e;
             --sidebar-bg: #2d0b4d;
@@ -28,12 +21,12 @@
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
+            margin: 0;
             display: flex;
-            min-height: 100vh;
-            line-height: 1.4;
+            height: 100vh;
+            overflow: hidden;
         }
 
-        /* --- Sidebar --- */
         .sidebar {
             width: 280px;
             background-color: var(--sidebar-bg);
@@ -43,12 +36,11 @@
             gap: 20px;
             border-right: 1px solid rgba(255,255,255,0.05);
             flex-shrink: 0;
-            height: 100vh;
-            position: sticky;
-            top: 0;
         }
 
-        .profile-header { text-align: center; }
+        .profile-header {
+            text-align: center;
+        }
 
         .banner {
             width: 100%;
@@ -71,6 +63,7 @@
 
         .connections {
             list-style: none;
+            padding: 0;
             margin: 20px 0;
         }
 
@@ -91,10 +84,12 @@
         }
 
         .main-content {
-            flex: 1;
+            flex-grow: 1;
             padding: 30px;
             overflow-y: auto;
-            max-width: 100%;
+            height: 100%;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent-purple) var(--bg-color);
         }
 
         .section-container {
@@ -106,7 +101,7 @@
         }
 
         .section-title {
-            margin-bottom: 20px;
+            margin: 0 0 20px 0;
             font-size: 20px;
             color: var(--accent-purple);
             font-weight: bold;
@@ -114,7 +109,7 @@
 
         .spec-list {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: 1fr 1fr;
             gap: 12px;
         }
 
@@ -123,6 +118,7 @@
             padding: 12px 15px;
             border-radius: 8px;
             font-size: 14px;
+            line-height: 1.4;
         }
 
         .spec-label {
@@ -156,6 +152,37 @@
             object-fit: cover;
         }
 
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .contact-form input, 
+        .contact-form textarea {
+            background: var(--input-bg);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 12px;
+            border-radius: 8px;
+            color: white;
+            font-family: inherit;
+        }
+
+        .contact-form button {
+            background: var(--accent-purple);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .contact-form button:hover {
+            filter: brightness(1.2);
+        }
+
         .game-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
@@ -167,6 +194,11 @@
             background: #222;
             border-radius: 8px;
             overflow: hidden;
+            transition: 0.3s;
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
         }
 
         .game-card img {
@@ -175,53 +207,34 @@
             object-fit: cover;
         }
 
-        .contact-form {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .contact-form input, .contact-form textarea {
-            background: var(--input-bg);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 12px;
-            border-radius: 8px;
-            color: white;
-            width: 100%;
-        }
-
-        .contact-form button {
-            background: var(--accent-purple);
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        /* --- Mobile Compatibility --- */
-        @media (max-width: 850px) {
+        @media (max-width: 768px) {
             body {
                 flex-direction: column;
-                overflow-x: hidden;
+                overflow: auto;
+                height: auto;
             }
 
             .sidebar {
                 width: 100%;
-                height: auto;
-                position: relative;
+                box-sizing: border-box;
                 border-right: none;
-                border-bottom: 1px solid rgba(255,255,255,0.1);
+                border-bottom: 1px solid rgba(255,255,255,0.05);
             }
 
             .main-content {
-                padding: 15px;
+                width: 100%;
+                box-sizing: border-box;
+                height: auto;
                 overflow: visible;
+                padding: 20px;
             }
 
             .spec-list {
                 grid-template-columns: 1fr;
+            }
+
+            .game-grid {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
             }
         }
     </style>
@@ -248,9 +261,10 @@
         <section class="section-container">
             <h2 class="section-title">About Me</h2>
             <div style="color: var(--text-dim); line-height: 1.6;">
-                Computer Programming student. 
+                Computer Programming student.
                 Focusing on <strong>embedded systems</strong>, robotics, and Discord bot development. 
                 Experienced with <strong>Python, C#, Java</strong>, and <strong>SQL</strong>. 
+                Currently working on AI integrations and hardware projects like ESP32-based RC cars.
             </div>
         </section>
 
@@ -263,7 +277,8 @@
                 <div class="spec-item"><span class="spec-label">Motherboard</span>Colorful Battle AX B650M-White WiFi</div>
                 <div class="spec-item"><span class="spec-label">Case</span>MSI MAG Pano M100R PZ White</div>
                 <div class="spec-item"><span class="spec-label">Cooling</span>MSI MAG Coreliquid A13 360mm</div>
-                <div class="spec-item"><span class="spec-label">Monitor</span>MSI Optix G24C4 144 Hz</div>
+                <div class="spec-item"><span class="spec-label">PSU</span>MSI MAG A750GN 750W 80+ Gold</div>
+                <div class="spec-item"><span class="spec-label">Monitor</span>MSI Optix G24C4 23.6" 1 ms Full HD Curved 144 Hz</div>
                 <div class="spec-item"><span class="spec-label">Mouse</span>Ajazz AJ179 Pro 8K</div>
                 <div class="spec-item"><span class="spec-label">Keyboard</span>Ulugames Howl 75</div>
                 <div class="spec-item"><span class="spec-label">Headset</span>HyperX Cloud II</div>
@@ -280,6 +295,7 @@
                         <div style="font-size: 12px; color: var(--text-dim);">playmc.slulee.online</div>
                     </div>
                 </div>
+                
                 <div class="server-item">
                     <img src="data/valheim.png" class="server-img" alt="Valheim">
                     <div>
@@ -287,6 +303,7 @@
                         <div style="font-size: 12px; color: var(--text-dim);">val.slulee.online:2456</div>
                     </div>
                 </div>
+
                 <div class="server-item">
                     <img src="data/terraria.png" class="server-img" alt="Terraria">
                     <div>
@@ -318,5 +335,5 @@
         </section>
     </main>
 </body>
-
+    
 </html>

@@ -9,17 +9,17 @@
     <style>
         :root {
             --bg-color: #1a0a2e;
-            --sidebar-bg: #2d0b4d;
-            --card-bg: #3d1b5d;
+            --sidebar-bg: rgba(45, 11, 77, 0.75); 
+            --card-bg: rgba(61, 27, 93, 0.65);
             --accent-purple: #9d4edd;
             --text-main: #ffffff;
             --text-dim: #b9bbbe;
-            --input-bg: #1e0836;
+            --input-bg: rgba(30, 8, 54, 0.8);
         }
 
         body {
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
+            background: url('data/background.gif') center/cover no-repeat fixed;
             color: var(--text-main);
             margin: 0;
             display: flex;
@@ -34,8 +34,10 @@
             display: flex;
             flex-direction: column;
             gap: 20px;
-            border-right: 1px solid rgba(255,255,255,0.05);
+            border-right: 1px solid rgba(255,255,255,0.1);
             flex-shrink: 0;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
 
         .profile-header {
@@ -55,7 +57,7 @@
             width: 90px;
             height: 90px;
             border-radius: 50%;
-            border: 4px solid var(--sidebar-bg);
+            border: 4px solid #2d0b4d;
             background: #444 url('data/avatar.png') center/cover;
             margin: 0 auto 10px;
             position: relative;
@@ -89,7 +91,7 @@
             overflow-y: auto;
             height: 100%;
             scrollbar-width: thin;
-            scrollbar-color: var(--accent-purple) var(--bg-color);
+            scrollbar-color: var(--accent-purple) transparent;
         }
 
         .section-container {
@@ -97,7 +99,11 @@
             border-radius: 16px;
             padding: 25px;
             margin-bottom: 25px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            /* Cam efekti */
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
         .section-title {
@@ -114,7 +120,7 @@
         }
 
         .spec-item {
-            background: rgba(0,0,0,0.2);
+            background: rgba(0,0,0,0.3);
             padding: 12px 15px;
             border-radius: 8px;
             font-size: 14px;
@@ -139,7 +145,7 @@
         .server-item {
             display: flex;
             align-items: center;
-            background: rgba(0,0,0,0.2);
+            background: rgba(0,0,0,0.3);
             padding: 12px;
             border-radius: 10px;
             gap: 15px;
@@ -181,6 +187,7 @@
 
         .contact-form button:hover {
             filter: brightness(1.2);
+            transform: scale(1.02);
         }
 
         .game-grid {
@@ -191,7 +198,7 @@
 
         .game-card {
             aspect-ratio: 2/3;
-            background: #222;
+            background: rgba(0,0,0,0.4);
             border-radius: 8px;
             overflow: hidden;
             transition: 0.3s;
@@ -218,7 +225,7 @@
                 width: 100%;
                 box-sizing: border-box;
                 border-right: none;
-                border-bottom: 1px solid rgba(255,255,255,0.05);
+                border-bottom: 1px solid rgba(255,255,255,0.1);
             }
 
             .main-content {
@@ -231,10 +238,6 @@
 
             .spec-list {
                 grid-template-columns: 1fr;
-            }
-
-            .game-grid {
-                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
             }
         }
     </style>
@@ -335,5 +338,4 @@
         </section>
     </main>
 </body>
-    
 </html>

@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slulee Profile</title>
+    
+    <style>
+        :root {
+            --bg-color: #1a0a2e;
+            --sidebar-bg: #2d0b4d;
+            --card-bg: #3d1b5d;
+            --accent-purple: #9d4edd;
+            --text-main: #ffffff;
+            --text-dim: #b9bbbe;
+            --input-bg: #1e0836;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 280px;
+            background-color: var(--sidebar-bg);
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            border-right: 1px solid rgba(255,255,255,0.05);
+            flex-shrink: 0;
+        }
+
+        .profile-header {
+            text-align: center;
+        }
+
+        .banner {
+            width: 100%;
+            height: 100px;
+            background: url('data/banner.png') center/cover;
+            background-color: #5a189a;
+            border-radius: 12px;
+            margin-bottom: -50px;
+        }
+
+        .avatar {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            border: 4px solid var(--sidebar-bg);
+            background: #444 url('data/avatar.png') center/cover;
+            margin: 0 auto 10px;
+            position: relative;
+        }
+
+        .connections {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        .connections li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            font-size: 14px;
+            color: var(--text-dim);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .conn-icon {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 30px;
+            overflow-y: auto;
+            height: 100%;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent-purple) var(--bg-color);
+        }
+
+        .section-container {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .section-title {
+            margin: 0 0 20px 0;
+            font-size: 20px;
+            color: var(--accent-purple);
+            font-weight: bold;
+        }
+
+        .spec-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .spec-item {
+            background: rgba(0,0,0,0.2);
+            padding: 12px 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .spec-label {
+            color: var(--accent-purple);
+            font-weight: bold;
+            font-size: 11px;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .server-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .server-item {
+            display: flex;
+            align-items: center;
+            background: rgba(0,0,0,0.2);
+            padding: 12px;
+            border-radius: 10px;
+            gap: 15px;
+        }
+
+        .server-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .contact-form input, 
+        .contact-form textarea {
+            background: var(--input-bg);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 12px;
+            border-radius: 8px;
+            color: white;
+            font-family: inherit;
+        }
+
+        .contact-form button {
+            background: var(--accent-purple);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .contact-form button:hover {
+            filter: brightness(1.2);
+        }
+
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 15px;
+        }
+
+        .game-card {
+            aspect-ratio: 2/3;
+            background: #222;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: 0.3s;
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .game-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <aside class="sidebar">
+        <div class="profile-header">
+            <div class="banner"></div>
+            <div class="avatar"></div>
+            <h2 style="margin: 10px 0 5px;">Slulee</h2>
+            <p style="color: var(--accent-purple); font-size: 14px; font-weight: bold; margin: 0;">Junior Software Developer</p>
+        </div>
+
+        <ul class="connections">
+            <li><img src="data/discord.png" class="conn-icon"> <span><strong>Discord:</strong> Slulee</span></li>
+            <li><img src="data/lol.png" class="conn-icon"> <span><strong>LoL:</strong> Slulee#pablo</span></li>
+            <li><img src="data/spotify.png" class="conn-icon"> <span><strong>Spotify:</strong> Slulee</span></li>
+            <li><img src="data/steam.png" class="conn-icon"> <span><strong>Steam:</strong> Slulee</span></li>
+        </ul>
+    </aside>
+
+    <main class="main-content">
+        
+        <section class="section-container">
+            <h2 class="section-title">About Me</h2>
+            <div style="color: var(--text-dim); line-height: 1.6;">
+                Computer Programming student.
+                Focusing on <strong>embedded systems</strong>, robotics, and Discord bot development. 
+                Experienced with <strong>Python, C#, Java</strong>, and <strong>SQL</strong>. 
+                Currently working on AI integrations and hardware projects like ESP32-based RC cars.
+            </div>
+        </section>
+
+        <section class="section-container">
+            <h2 class="section-title">System</h2>
+            <div class="spec-list">
+                <div class="spec-item"><span class="spec-label">CPU</span>AMD Ryzen 7 7800X3D</div>
+                <div class="spec-item"><span class="spec-label">GPU</span>Gigabyte RTX 5070 EAGLE OC ICE</div>
+                <div class="spec-item"><span class="spec-label">RAM</span>32GB Patriot Viper Elite 5 RGB 6600MHz</div>
+                <div class="spec-item"><span class="spec-label">Motherboard</span>Colorful Battle AX B650M-White WiFi</div>
+                <div class="spec-item"><span class="spec-label">Case</span>MSI MAG Pano M100R PZ White</div>
+                <div class="spec-item"><span class="spec-label">Cooling</span>MSI MAG Coreliquid A13 360mm</div>
+                <div class="spec-item"><span class="spec-label">PSU</span>MSI MAG A750GN 750W 80+ Gold</div>
+                <div class="spec-item"><span class="spec-label">Monitor</span>MSI Optix G24C4 23.6" 1 ms Full HD Curved 144 Hz</div>
+                <div class="spec-item"><span class="spec-label">Mouse</span>Ajazz AJ179 Pro 8K</div>
+                <div class="spec-item"><span class="spec-label">Keyboard</span>Ulugames Howl 75</div>
+                <div class="spec-item"><span class="spec-label">Headset</span>HyperX Cloud II</div>
+            </div>
+        </section>
+
+        <section class="section-container">
+            <h2 class="section-title">Servers</h2>
+            <div class="server-list">
+                <div class="server-item">
+                    <img src="data/minecraft.png" class="server-img" alt="Minecraft">
+                    <div>
+                        <div style="font-weight: bold;">Minecraft Survival</div>
+                        <div style="font-size: 12px; color: var(--text-dim);">playmc.slulee.online</div>
+                    </div>
+                </div>
+
+                <div class="server-item">
+                    <img src="data/valheim.png" class="server-img" alt="Valheim">
+                    <div>
+                        <div style="font-weight: bold;">Valheim Dedicated</div>
+                        <div style="font-size: 12px; color: var(--text-dim);">val.slulee.online:2456</div>
+                    </div>
+                </div>
+
+                <div class="server-item">
+                    <img src="data/terraria.png" class="server-img" alt="Terraria">
+                    <div>
+                        <div style="font-weight: bold;">Terraria</div>
+                        <div style="font-size: 12px; color: var(--text-dim);">terraplay.slulee.online:7777</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-container">
+            <h2 class="section-title">Board</h2>
+            <div class="game-grid">
+                <div class="game-card"><img src="data/game1.png" alt="Undertale"></div>
+                <div class="game-card"><img src="data/game2.png" alt="Elden Ring"></div>
+                <div class="game-card"><img src="data/game3.png" alt="Hollow Knight"></div>
+                <div class="game-card"><img src="data/game4.png" alt="Ultrakill"></div>
+            </div>
+        </section>
+
+        <section class="section-container">
+            <h2 class="section-title">Contact Me</h2>
+            <div class="contact-form">
+                <input type="text" placeholder="Your Name">
+                <input type="email" placeholder="Your Email Address">
+                <textarea rows="4" placeholder="Your Message..."></textarea>
+                <button type="button">Send Message</button>
+            </div>
+        </section>
+
+    </main>
+
+</body>
+
+</html>

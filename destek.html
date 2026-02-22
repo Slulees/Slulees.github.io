@@ -1,0 +1,55 @@
+<html lang="tr">
+<head>
+	<meta charset="UTF-8">
+	<title>Destek</title>
+	<link rel="stylesheet" href="stil.css">
+</head>
+<body>
+	<div class="üst">
+		<a href="menü.html">Menü</a>
+		<a href="hakkımızda.html">Hakkımızda</a>
+		<a href="iletişim.html">İletişim</a>
+		<div class="sel">Destek</div>
+	</div>
+		
+	<div class="yan">
+		<div class="yanmadde">Destek</div>
+	</div>
+		
+	<div class="orta">
+		<div class="menü">
+			<title>Destek Formu</title>
+			
+			<div class="büyükkutu">
+				<form method="post" action="mailto:destek@hamburgerrestorani.com">
+					<div class="kutu2">
+						<div class="başlık">Destek Formu</div>
+					</div>
+
+					<label for="isim">Adınız:</label>
+					<input type="text" id="isim" name="isim" placeholder="Adınızı giriniz" required>
+
+					<label for="soyisim">Soyadınız:</label>
+					<input type="text" id="soyisim" name="soyisim" placeholder="Soyadınızı giriniz" required>
+
+					<label for="email">E-posta Adresiniz:</label>
+					<input type="email" id="email" name="email" placeholder="ornek@example.com" required>
+
+					<label for="konu">Destek Konusu:</label>
+					<select id="konu" name="konu" required>
+						<option value="siparis">Sipariş Sorunu</option>
+						<option value="ürün">Ürün Hakkında Soru</option>
+						<option value="teklif">Teklif veya Öneri</option>
+						<option value="diğer">Diğer</option>
+					</select>
+
+					<label for="mesaj">Mesajınız:</label>
+					<textarea id="mesaj" name="mesaj" rows="5" placeholder="Mesajınızı buraya yazın..." required></textarea>
+
+					<input class="kutu2" type="submit" value="Gönder">
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

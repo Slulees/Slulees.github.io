@@ -4,22 +4,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Slulee's Page</title>
-    
+    <title>Slulee | Portfolio</title>
+
     <style>
         :root {
-            --bg-color: #1a0a2e;
-            --sidebar-bg: rgba(45, 11, 77, 0.75); 
-            --card-bg: rgba(61, 27, 93, 0.65);
+            --bg-dark: #0f051d;
+            --bg-sidebar: rgba(28, 9, 48, 0.9);
+            --bg-card: rgba(45, 18, 77, 0.5);
+            --bg-input: rgba(20, 5, 40, 0.9);
             --accent-purple: #9d4edd;
+            --accent-glow: rgba(157, 78, 221, 0.4);
             --text-main: #ffffff;
             --text-dim: #b9bbbe;
-            --input-bg: rgba(30, 8, 54, 0.8);
+            --online-green: #43b581;
+            --offline-red: #f04747;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
+        * { box-sizing: border-box; }
+
         body {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: url('data/background.gif') center/cover no-repeat fixed;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: var(--bg-dark) url('data/background.gif') center/cover no-repeat fixed;
             color: var(--text-main);
             margin: 0;
             display: flex;
@@ -27,366 +33,321 @@
             overflow: hidden;
         }
 
+        /* --- LOADING --- */
+        #loading-screen {
+            position: fixed; inset: 0; background: var(--bg-dark); z-index: 10000;
+            display: flex; justify-content: center; align-items: center;
+            transition: opacity 0.8s, visibility 0.8s;
+        }
+        .loader-logo {
+            width: 100px; height: 100px; border-radius: 50%;
+            border: 3px solid var(--accent-purple);
+            background: url('data/avatar.png') center/cover;
+            animation: breathe 2s infinite ease-in-out;
+        }
+        @keyframes breathe { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.1); opacity: 1; } }
+
+        /* --- SIDEBAR --- */
         .sidebar {
-            width: 280px;
-            background-color: var(--sidebar-bg);
-            padding: 25px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            border-right: 1px solid rgba(255,255,255,0.1);
-            flex-shrink: 0;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            width: 300px; background: var(--bg-sidebar); backdrop-filter: blur(15px);
+            border-right: 1px solid rgba(255,255,255,0.1); padding: 30px 20px;
+            display: flex; flex-direction: column; flex-shrink: 0;
         }
 
-        .profile-header {
-            text-align: center;
+        .profile-section { text-align: center; margin-bottom: 20px; }
+        
+        /* Banner & Avatar Fix */
+        .banner-container { position: relative; width: 100%; height: 100px; margin-bottom: 50px; }
+        .banner { 
+            width: 100%; height: 100%; 
+            background: url('data/banner.png') center/cover, #5a189a; 
+            border-radius: 12px; 
         }
-
-        .banner {
-            width: 100%;
-            height: 100px;
-            background: url('data/banner.png') center/cover;
-            background-color: #5a189a;
-            border-radius: 12px;
-            margin-bottom: -50px;
-        }
-
         .avatar {
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            border: 4px solid #2d0b4d;
-            background: #444 url('data/avatar.png') center/cover;
-            margin: 0 auto 10px;
-            position: relative;
+            width: 85px; height: 85px; border-radius: 50%;
+            border: 4px solid #1c0930;
+            background: #2d0b4d url('data/avatar.png') center/cover;
+            position: absolute; bottom: -42px; left: 50%; transform: translateX(-50%);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.4);
         }
 
-        .connections {
-            list-style: none;
-            padding: 0;
-            margin: 20px 0;
-        }
+        .username { font-size: 22px; font-weight: 800; margin: 10px 0 5px; }
+        .role { color: var(--accent-purple); font-size: 13px; font-weight: bold; text-transform: uppercase; }
 
-        .connections li {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 0;
-            font-size: 14px;
-            color: var(--text-dim);
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+        .conn-list { list-style: none; padding: 0; margin: 25px 0; }
+        .conn-list li {
+            display: flex; align-items: center; gap: 12px; padding: 12px;
+            background: rgba(255,255,255,0.03); border-radius: 8px; margin-bottom: 8px;
+            font-size: 14px; transition: var(--transition); border: 1px solid transparent;
         }
+        .conn-list li:hover { border-color: var(--accent-purple); background: rgba(157, 78, 221, 0.1); }
+        .icon-svg { width: 20px; height: 20px; }
 
-        .conn-icon {
-            width: 24px;
-            height: 24px;
-            object-fit: contain;
+        /* --- MAIN CONTENT --- */
+        .main-content { flex-grow: 1; padding: 40px; overflow-y: auto; scrollbar-width: thin; }
+        .section-card {
+            background: var(--bg-card); border-radius: 18px; padding: 25px;
+            margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px); box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
+        .section-title { font-size: 20px; font-weight: 800; color: var(--accent-purple); margin: 0 0 20px; text-transform: uppercase; letter-spacing: 1px; }
 
-        .main-content {
-            flex-grow: 1;
-            padding: 30px;
-            overflow-y: auto;
-            height: 100%;
-            scrollbar-width: thin;
-            scrollbar-color: var(--accent-purple) transparent;
-        }
+        /* System Grid - All Components Included */
+        .system-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 12px; }
+        .spec-item { background: rgba(0,0,0,0.3); padding: 12px 15px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); }
+        .spec-label { display: block; font-size: 10px; color: var(--accent-purple); font-weight: 800; margin-bottom: 4px; }
+        .spec-val { font-size: 13px; font-weight: 500; }
 
-        .section-container {
-            background-color: var(--card-bg);
-            border-radius: 16px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-            /* Cam efekti */
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .section-title {
-            margin: 0 0 20px 0;
-            font-size: 20px;
-            color: var(--accent-purple);
-            font-weight: bold;
-        }
-
-        .spec-list {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-
-        .spec-item {
-            background: rgba(0,0,0,0.3);
-            padding: 12px 15px;
-            border-radius: 8px;
-            font-size: 14px;
-            line-height: 1.4;
-        }
-
-        .spec-label {
-            color: var(--accent-purple);
-            font-weight: bold;
-            font-size: 11px;
-            text-transform: uppercase;
-            display: block;
-            margin-bottom: 4px;
-        }
-
-        .server-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
+        /* Server List */
         .server-item {
-            position: relative; 
-            display: flex;
-            align-items: center;
-            background: rgba(0,0,0,0.3);
-            padding: 12px;
-            border-radius: 10px;
-            gap: 15px;
+            display: flex; align-items: center; gap: 15px; background: rgba(0,0,0,0.3);
+            padding: 15px; border-radius: 12px; margin-bottom: 12px; position: relative;
+            transition: var(--transition); cursor: pointer; border: 1px solid transparent;
         }
+        .server-item:hover { border-color: var(--accent-purple); }
+        .server-img { width: 45px; height: 45px; border-radius: 10px; object-fit: cover; }
+        .status-box { margin-left: auto; display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: bold; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--offline-red); }
         
-        .status-indicator {
-            position: absolute;
-            top: 10px;
-            right: 12px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 10px;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
-        .dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-        }
-        
-        .online { color: #43b581; }
-        .online .dot { 
-            background-color: #43b581; 
-            box-shadow: 0 0 8px #43b581;
-            animation: pulse 2s infinite; 
-        }
-        
-        .offline { color: #f04747; }
-        .offline .dot { background-color: #f04747; }
-        
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
-        }
+        /* Game Grid */
+        .game-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 15px; }
+        .game-card { aspect-ratio: 2/3; border-radius: 10px; overflow: hidden; cursor: pointer; transition: var(--transition); }
+        .game-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px var(--accent-glow); }
+        .game-card img { width: 100%; height: 100%; object-fit: cover; }
 
-        .server-img {
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-            object-fit: cover;
+        /* Form */
+        .contact-form { display: grid; gap: 10px; }
+        .contact-form input, .contact-form textarea {
+            background: var(--bg-input); border: 1px solid rgba(255,255,255,0.1);
+            padding: 14px; border-radius: 10px; color: white; font-family: inherit; outline: none;
         }
+        .btn-send {
+            background: var(--accent-purple); color: white; border: none; padding: 14px;
+            border-radius: 10px; font-weight: 800; cursor: pointer; transition: var(--transition);
+        }
+        .btn-send:hover { filter: brightness(1.2); }
 
-        .contact-form {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+        /* Language Switcher */
+        .lang-switcher { margin-top: auto; display: flex; gap: 8px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; }
+        .lang-btn {
+            flex: 1; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1);
+            color: var(--text-dim); padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold;
+        }
+        .lang-btn.active { background: var(--accent-purple); color: white; border-color: var(--accent-purple); }
+
+        /* Modal */
+        #game-modal {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95);
+            z-index: 20000; align-items: center; justify-content: center; padding: 20px;
+        }
+        .modal-content {
+            background: #1c0930; max-width: 750px; width: 100%; border-radius: 20px;
+            display: flex; overflow: hidden; border: 1px solid var(--accent-purple);
+        }
+        .modal-left { width: 40%; }
+        .modal-left img { width: 100%; height: 100%; object-fit: cover; }
+        .modal-right { width: 60%; padding: 35px; display: flex; flex-direction: column; }
+        .steam-btn {
+            margin-top: auto; background: #1b2838; color: #66c0f4; text-decoration: none;
+            padding: 15px; border-radius: 8px; text-align: center; font-weight: bold; border: 1px solid #66c0f4;
         }
 
-        .contact-form input, 
-        .contact-form textarea {
-            background: var(--input-bg);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 12px;
-            border-radius: 8px;
-            color: white;
-            font-family: inherit;
-        }
-
-        .contact-form button {
-            background: var(--accent-purple);
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-
-        .contact-form button:hover {
-            filter: brightness(1.2);
-            transform: scale(1.02);
-        }
-
-        .game-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            gap: 15px;
-        }
-
-        .game-card {
-            aspect-ratio: 2/3;
-            background: rgba(0,0,0,0.4);
-            border-radius: 8px;
-            overflow: hidden;
-            transition: 0.3s;
-        }
-
-        .game-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .game-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        @media (max-width: 768px) {
-            body {
-                flex-direction: column;
-                overflow: auto;
-                height: auto;
-            }
-
-            .sidebar {
-                width: 100%;
-                box-sizing: border-box;
-                border-right: none;
-                border-bottom: 1px solid rgba(255,255,255,0.1);
-            }
-
-            .main-content {
-                width: 100%;
-                box-sizing: border-box;
-                height: auto;
-                overflow: visible;
-                padding: 20px;
-            }
-
-            .spec-list {
-                grid-template-columns: 1fr;
-            }
+        /* Responsive */
+        @media (max-width: 850px) {
+            body { flex-direction: column; overflow: auto; height: auto; }
+            .sidebar { width: 100%; }
+            .modal-content { flex-direction: column; max-height: 85vh; overflow-y: auto; }
+            .modal-left, .modal-right { width: 100%; }
+            .modal-left { height: 200px; }
+            .system-grid { grid-template-columns: 1fr 1fr; }
         }
     </style>
 </head>
 
 <body>
+
+    <div id="loading-screen"><div class="loader-logo"></div></div>
+
+    <div id="game-modal" onclick="closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-left"><img id="m-img" src=""></div>
+            <div class="modal-right">
+                <h2 id="m-title" style="margin:0 0 15px; color:var(--accent-purple);"></h2>
+                <p id="m-desc" style="color:var(--text-dim); line-height:1.6;"></p>
+                <a id="m-link" href="#" target="_blank" class="steam-btn" data-en="VIEW ON STEAM" data-tr="STEAM'DE GÖRÜNTÜLE">VIEW ON STEAM</a>
+            </div>
+        </div>
+    </div>
+
     <aside class="sidebar">
-        <div class="profile-header">
-            <div class="banner"></div>
-            <div class="avatar"></div>
-            <h2 style="margin: 10px 0 5px;">Slulee</h2>
-            <p style="color: var(--accent-purple); font-size: 14px; font-weight: bold; margin: 0;">Junior Software Developer</p>
+        <div class="profile-section">
+            <div class="banner-container">
+                <div class="banner"></div>
+                <div class="avatar"></div>
+            </div>
+            <h2 class="username">Slulee</h2>
+            <div class="role" id="prof-sub" data-en="Programming Enthusiast" data-tr="Programlama meraklısı">Programming Enthusiast</div>
         </div>
 
-        <ul class="connections">
-            <li><img src="data/discord.png" class="conn-icon"> <span><strong>Discord:</strong> Slulee</span></li>
-            <li><img src="data/lol.png" class="conn-icon"> <span><strong>LoL:</strong> Slulee#pablo</span></li>
-            <li><img src="data/spotify.png" class="conn-icon"> <span><strong>Spotify:</strong> Slulee</span></li>
-            <li><img src="data/steam.png" class="conn-icon"> <span><strong>Steam:</strong> Slulee</span></li>
+        <ul class="conn-list">
+            <li><img src="data/discord.png" class="icon-svg"> <span><strong>Discord:</strong> Slulee</span></li>
+            <li><img src="data/lol.png" class="icon-svg"> <span><strong>LoL:</strong> Slulee#pablo</span></li>
+            <li><img src="data/spotify.png" class="icon-svg"> <span><strong>Spotify:</strong> Slulee</span></li>
+            <li><img src="data/steam.png" class="icon-svg"> <span><strong>Steam:</strong> Slulee</span></li>
         </ul>
+
+        <div class="lang-switcher">
+            <button class="lang-btn active" onclick="setLanguage('en')">EN</button>
+            <button class="lang-btn" onclick="setLanguage('tr')">TR</button>
+        </div>
     </aside>
 
     <main class="main-content">
-        <section class="section-container">
-            <h2 class="section-title">About Me</h2>
-            <div style="color: var(--text-dim); line-height: 1.6;">
-                Computer Programming student.
-                Focusing on <strong>embedded systems</strong>, robotics, and Discord bot development. 
-                Experienced with <strong>Python, C#, Java</strong>, and <strong>SQL</strong>. 
-                Currently working on AI integrations and hardware projects like ESP32-based RC cars.
+        <section class="section-card">
+            <h2 class="section-title" data-en="About Me" data-tr="Hakkımda">About Me</h2>
+            <p id="about-text" style="color:var(--text-dim); line-height:1.7; margin:0;"
+               data-en="Computer Programming student. Focusing on embedded systems, robotics, and Discord bot development. Experienced with Python, C#, Java, and SQL. Currently working on AI integrations and hardware projects."
+               data-tr="Bilgisayar Programcılığı öğrencisiyim. Gömülü sistemler, robotik ve Discord bot geliştirme üzerine odaklanıyorum. Python, C#, Java ve SQL dillerinde deneyim sahibiyim. Şu anda yapay zeka entegrasyonları ve robot projeleri üzerinde çalışıyorum.">
+                Computer Programming student. Focusing on embedded systems, robotics, and Discord bot development. Experienced with Python, C#, Java, and SQL. Currently working on AI integrations and hardware projects.
+            </p>
+        </section>
+
+        <section class="section-card">
+            <h2 class="section-title" data-en="System" data-tr="Sistem">System</h2>
+            <div class="system-grid">
+                <div class="spec-item"><span class="spec-label" data-en="CPU" data-tr="İşlemci">CPU</span><span class="spec-val">AMD Ryzen 7 7800X3D</span></div>
+                <div class="spec-item"><span class="spec-label" data-en="GPU" data-tr="Ekran Kartı">GPU</span><span class="spec-val">RTX 5070 EAGLE OC ICE</span></div>
+                <div class="spec-item"><span class="spec-label">RAM</span><span class="spec-val">32GB Patriot Viper RGB 6600MHz</span></div>
+                <div class="spec-item"><span class="spec-label" data-en="Motherboard" data-tr="Anakart">Motherboard</span><span class="spec-val">B650M-White WiFi</span></div>
+                <div class="spec-item"><span class="spec-label" data-en="Case" data-tr="Kasa">Case</span><span class="spec-val">MSI MAG Pano M100R White</span></div>
+                <div class="spec-item"><span class="spec-label" data-en="Cooling" data-tr="Soğutucu">Cooling</span><span class="spec-val">MSI Coreliquid A13 360mm</span></div>
+                <div class="spec-item"><span class="spec-label" data-en="PSU" data-tr="Güç Kaynağı">PSU</span><span class="spec-val">MSI A750GN 750W Gold</span></div>
+                <div class="spec-item"><span class="spec-label" data-en="Monitor" data-tr="Monitör">Monitor</span><span class="spec-val">MSI Optix G24C4 144 Hz</span></div>
+                <div class="spec-item"><span class="spec-label" data-en="Mouse" data-tr="Fare">Mouse</span><span class="spec-val">Ajazz AJ179 Pro 8K</span></div>
+                <div class="spec-item"><span class="spec-label" data-en="Keyboard" data-tr="Klavye">Keyboard</span><span class="spec-val">Ulugames Howl 75</span></div>
+                <div class="spec-item"><span class="spec-label" data-en="Headset" data-tr="Kulaklık">Headset</span><span class="spec-val">HyperX Cloud II</span></div>
             </div>
         </section>
 
-        <section class="section-container">
-            <h2 class="section-title">System</h2>
-            <div class="spec-list">
-                <div class="spec-item"><span class="spec-label">CPU</span>AMD Ryzen 7 7800X3D</div>
-                <div class="spec-item"><span class="spec-label">GPU</span>Gigabyte RTX 5070 EAGLE OC ICE</div>
-                <div class="spec-item"><span class="spec-label">RAM</span>32GB Patriot Viper Elite 5 RGB 6600MHz</div>
-                <div class="spec-item"><span class="spec-label">Motherboard</span>Colorful Battle AX B650M-White WiFi</div>
-                <div class="spec-item"><span class="spec-label">Case</span>MSI MAG Pano M100R PZ White</div>
-                <div class="spec-item"><span class="spec-label">Cooling</span>MSI MAG Coreliquid A13 360mm</div>
-                <div class="spec-item"><span class="spec-label">PSU</span>MSI MAG A750GN 750W 80+ Gold</div>
-                <div class="spec-item"><span class="spec-label">Monitor</span>MSI Optix G24C4 23.6" 1 ms Full HD Curved 144 Hz</div>
-                <div class="spec-item"><span class="spec-label">Mouse</span>Ajazz AJ179 Pro 8K</div>
-                <div class="spec-item"><span class="spec-label">Keyboard</span>Ulugames Howl 75</div>
-                <div class="spec-item"><span class="spec-label">Headset</span>HyperX Cloud II</div>
-            </div>
-        </section>
-
-        <section class="section-container">
-            <h2 class="section-title">Servers</h2>
-            <div class="server-list">
-                <div class="server-item">
-                    <div class="status-indicator offline">
-                        <span>Offline</span>
-                        <div class="dot"></div>
-                    </div>
-                    <img src="data/minecraft.png" class="server-img" alt="Minecraft">
-                    <div>
-                        <div style="font-weight: bold;">Minecraft Survival</div>
-                        <div style="font-size: 12px; color: var(--text-dim);">playmc.slulee.online</div>
-                    </div>
+        <section class="section-card">
+            <h2 class="section-title" data-en="Servers" data-tr="Sunucular">Servers</h2>
+            <div class="server-item">
+                <img src="data/minecraft.png" class="server-img">
+                <div>
+                    <div style="font-weight:bold">Minecraft Survival</div>
+                    <div style="font-size:12px; color:var(--text-dim)">playmc.slulee.online</div>
                 </div>
-                
-                <div class="server-item">
-                    <div class="status-indicator offline">
-                        <span>Offline</span>
-                        <div class="dot"></div>
-                    </div>
-                    <img src="data/valheim.png" class="server-img" alt="Valheim">
-                    <div>
-                        <div style="font-weight: bold;">Valheim Dedicated</div>
-                        <div style="font-size: 12px; color: var(--text-dim);">val.slulee.online:2456</div>
-                    </div>
+                <div class="status-box" style="color:var(--offline-red)"><span data-en="Offline" data-tr="Çevrimdışı">Offline</span><div class="dot"></div></div>
+            </div>
+            <div class="server-item">
+                <img src="data/terraria.png" class="server-img">
+                <div>
+                    <div style="font-weight:bold">Terraria Calamity</div>
+                    <div style="font-size:12px; color:var(--text-dim)">terraplay.slulee.online:7777</div>
                 </div>
-        
-                <div class="server-item">
-                    <div class="status-indicator offline">
-                        <span>Offline</span>
-                        <div class="dot"></div>
-                    </div>
-                    <img src="data/terraria.png" class="server-img" alt="Terraria">
-                    <div>
-                        <div style="font-weight: bold;">Terraria</div>
-                        <div style="font-size: 12px; color: var(--text-dim);">terraplay.slulee.online:7777</div>
-                    </div>
-                </div>
+                <div class="status-box" style="color:var(--offline-red)"><span data-en="Offline" data-tr="Çevrimdışı">Offline</span><div class="dot"></div></div>
             </div>
         </section>
 
-        <section class="section-container">
-            <h2 class="section-title">Board</h2>
-            <div class="game-grid">
-                <div class="game-card"><img src="data/game1.png" alt="Undertale"></div>
-                <div class="game-card"><img src="data/game2.png" alt="Elden Ring"></div>
-                <div class="game-card"><img src="data/game3.png" alt="Hollow Knight"></div>
-                <div class="game-card"><img src="data/game4.png" alt="Ultrakill"></div>
-            </div>
-        </section>
+        <section class="section-card">
+    <h2 class="section-title" data-en="Favorite Games" data-tr="Sevdiğim Oyunlar">Sevdiğim Oyunlar</h2>
+    <div class="game-grid">
+        <div class="game-card" onclick="openGame('Undertale')"><img src="data/game1.png" alt="Undertale"></div>
+        <div class="game-card" onclick="openGame('Elden Ring')"><img src="data/game2.png" alt="Elden Ring"></div>
+        <div class="game-card" onclick="openGame('Hollow Knight')"><img src="data/game3.png" alt="Hollow Knight"></div>
+        <div class="game-card" onclick="openGame('Ultrakill')"><img src="data/game4.png" alt="Ultrakill"></div>
+        <div class="game-card" onclick="openGame('Silksong')"><img src="data/game5.png" alt="Silksong"></div>
+        <div class="game-card" onclick="openGame('Valheim')"><img src="data/game6.png" alt="Valheim"></div>
+        <div class="game-card" onclick="openGame('Stardew Valley')"><img src="data/game7.png" alt="Stardew Valley"></div>
+        <div class="game-card" onclick="openGame('Celeste')"><img src="data/game8.png" alt="Celeste"></div>
+        <div class="game-card" onclick="openGame('Terraria')"><img src="data/game9.png" alt="Terraria"></div>
+        <div class="game-card" onclick="openGame('Deltarune')"><img src="data/game10.png" alt="Deltarune"></div>
+        <div class="game-card" onclick="openGame('OneShot')"><img src="data/game11.png" alt="OneShot"></div>
+        <div class="game-card" onclick="openGame('Bloons TD 6')"><img src="data/game12.png" alt="Bloons TD 6"></div>
+        <div class="game-card" onclick="openGame('Nightreign')"><img src="data/game13.png" alt="Nightreign"></div>
+        <div class="game-card" onclick="openGame('Cookie Clicker')"><img src="data/game14.png" alt="Cookie Clicker"></div>
+        <div class="game-card" onclick="openGame('Hades')"><img src="data/game15.png" alt="Hades"></div>
+        <div class="game-card" onclick="openGame('Vampire Survivors')"><img src="data/game16.png" alt="Vampire Survivors"></div>
+        <div class="game-card" onclick="openGame('Brotato')"><img src="data/game17.png" alt="Brotato"></div>
+        <div class="game-card" onclick="openGame('Megabonk')"><img src="data/game18.png" alt="Megabonk"></div>
+    </div>
+</section>
 
-        <section class="section-container">
-            <h2 class="section-title">Contact Me</h2>
-            <div class="contact-form">
-                <input type="text" placeholder="Your Name">
-                <input type="email" placeholder="Your Email Address">
-                <textarea rows="4" placeholder="Your Message..."></textarea>
-                <button type="button">Send Message</button>
-            </div>
+        <section class="section-card">
+            <h2 class="section-title" data-en="Contact Me" data-tr="İletişim">Contact Me</h2>
+            <form class="contact-form">
+                <input type="text" placeholder="Your Name" data-en-ph="Your Name" data-tr-ph="Adınız">
+                <input type="email" placeholder="Your Email" data-en-ph="Your Email" data-tr-ph="E-posta Adresiniz">
+                <textarea id="auto-text" rows="2" placeholder="Your Message..." data-en-ph="Your Message..." data-tr-ph="Mesajınız..." oninput="autoExpand(this)"></textarea>
+                <button type="button" class="btn-send" data-en="Send Message" data-tr="Mesaj Gönder">Send Message</button>
+            </form>
         </section>
     </main>
+
+    <script>
+        let currentLang = 'en';
+
+        const gameData = {
+            'Elden Ring': { en: 'Rise, Tarnished! A masterpiece by FromSoftware.', tr: 'Açık dünya türünün zirvesi, epik bir macera.', img: 'data/eldenring.png', link: 'https://store.steampowered.com/app/1245620/' },
+            'Ultrakill': { en: 'Fast-paced brutal retro FPS.', tr: 'Hızlı ve acımasız retro tarzı FPS deneyimi.', img: 'data/ultrakill.png', link: 'https://store.steampowered.com/app/1229490/' },
+            'Hollow Knight': { en: 'Epic action adventure in a ruined kingdom.', tr: 'Harabe bir krallıkta geçen destansı aksiyon macerası.', img: 'data/hollowknight.png', link: 'https://store.steampowered.com/app/367520/' },
+            'Silksong': { en: 'The highly anticipated sequel to Hollow Knight.', tr: 'Hollow Knight\'ın merakla beklenen devam oyunu.', img: 'data/silksong.png', link: 'https://store.steampowered.com/app/1030300/' },
+            'Valheim': { en: 'Viking survival in a procedurally generated world.', tr: 'Viking temalı hayatta kalma ve inşa etme oyunu.', img: 'data/valheim.png', link: 'https://store.steampowered.com/app/892970/' },
+            'Stardew Valley': { en: 'The ultimate peaceful farming simulator.', tr: 'Huzur dolu bir çiftçilik ve yaşam simülasyonu.', img: 'data/stardew.png', link: 'https://store.steampowered.com/app/413150/' },
+            'Celeste': { en: 'A tight platformer about climbing a mountain.', tr: 'Zorlu engeller ve derin bir hikayeye sahip platform oyunu.', img: 'data/celeste.png', link: 'https://store.steampowered.com/app/504230/' },
+            'Terraria': { en: 'Dig, fight, explore, build!', tr: 'Kaz, savaş, keşfet ve inşa et! Sınır tanımayan bir dünya.', img: 'data/terraria.png', link: 'https://store.steampowered.com/app/105600/' },
+            'Deltarune': { en: 'The next chapter from the creator of Undertale.', tr: 'Undertale\'ın yapımcısından yeni bir hikaye.', img: 'data/deltarune.png', link: 'https://store.steampowered.com/app/1650730/' },
+            'OneShot': { en: 'A surreal puzzle adventure with a meta twist.', tr: 'Dünyayı kurtarmak için sadece tek bir şansın var.', img: 'data/oneshot.png', link: 'https://store.steampowered.com/app/420530/' },
+            'Bloons TD 6': { en: 'The best tower defense experience.', tr: 'Dünyanın en popüler kule savunma oyunlarından biri.', img: 'data/btd6.png', link: 'https://store.steampowered.com/app/960090/' },
+            'Nightreign': { en: 'Atmospheric action in a dark world.', tr: 'Karanlık bir dünyada geçen atmosferik aksiyon.', img: 'data/nightreign.png', link: 'https://store.steampowered.com/app/3116810/' },
+            'Cookie Clicker': { en: 'The original clicker game.', tr: 'Kurabiye imparatorluğunu kurduğun efsanevi tıklama oyunu.', img: 'data/cookie.png', link: 'https://store.steampowered.com/app/1454400/' },
+            'Hades': { en: 'Battle out of hell in this god-like roguelike.', tr: 'Yunan mitolojisinde geçen muazzam bir roguelike aksiyonu.', img: 'data/hades.png', link: 'https://store.steampowered.com/app/1145360/' },
+            'Vampire Survivors': { en: 'Bullet hell survival against the undead.', tr: 'Binlerce yaratığa karşı hayatta kalma mücadelesi.', img: 'data/vampire.png', link: 'https://store.steampowered.com/app/1794680/' },
+            'Brotato': { en: 'A top-down arena shooter roguelite.', tr: 'Aynı anda 6 silah kullanan bir patatesi kontrol et.', img: 'data/brotato.png', link: 'https://store.steampowered.com/app/1942280/' },
+            'Megabonk': { en: 'Action-packed indie brawler.', tr: 'Hızlı ve eğlenceli indie aksiyon oyunu.', img: 'data/megabonk.png', link: 'https://store.steampowered.com/app/2816950/' }
+        };
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.toggle('active', btn.getAttribute('onclick').includes(`'${lang}'`)));
+            
+            document.querySelectorAll('[data-en]').forEach(el => {
+                el.innerText = el.getAttribute(`data-${lang}`);
+            });
+
+            document.querySelectorAll('[data-tr-ph]').forEach(el => {
+                el.placeholder = el.getAttribute(`data-${lang}-ph`);
+            });
+        }
+
+        function openGame(name) {
+            const game = gameData[name];
+            document.getElementById('m-title').innerText = name;
+            document.getElementById('m-desc').innerText = game[currentLang];
+            document.getElementById('m-img').src = game.img;
+            document.getElementById('m-link').href = game.link;
+            document.getElementById('m-link').innerText = document.getElementById('m-link').getAttribute(`data-${currentLang}`);
+            document.getElementById('game-modal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('game-modal').style.display = 'none';
+            document.body.style.overflow = '';
+        }
+
+        function autoExpand(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = textarea.scrollHeight + 'px';
+        }
+
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const loader = document.getElementById('loading-screen');
+                loader.style.opacity = '0';
+                setTimeout(() => loader.style.visibility = 'hidden', 800);
+            }, 1000);
+        });
+    </script>
 </body>
 </html>
-
-
-
